@@ -31,3 +31,12 @@ export async function findByIdempotencyKey(key: string, client: PoolClient | typ
     return rows[0];
     
 }
+
+export async function findAllUserTransactions(userId: number){
+     const { rows } = await pool.query<Transaction>(
+            `SELECT * FROM transactions WHERE sender_wallet_id = $1 OR receiver_wallet_id = $1`,
+            [userId]
+        );
+    
+        return rows;
+}

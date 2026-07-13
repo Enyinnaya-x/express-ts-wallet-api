@@ -19,7 +19,7 @@ export async function sendMoney(data: TransferRequest) {
     const existingTransaction  = await findByIdempotencyKey(data.idempotencyKey, client);
 
     if(existingTransaction){
-        return existingTransaction.status;
+        return existingTransaction;
     }
 
 
@@ -38,9 +38,12 @@ export async function sendMoney(data: TransferRequest) {
       throw new Error('Insufficient balance');
     }
 
+    const newSenderBalance = Number(senderWallet.balance) - Number(data.amount);
+    const newRecipientBalance = Number(recipientWallet.balance) + Number(data.amount);
+
     //call repo to update both wallets
-    await updateBalance(senderWallet.id, senderWallet.balance - data.amount, client);
-    await updateBalance(recipientWallet.id, recipientWallet.balance + data.amount, client);
+    await updateBalance(senderWallet.id, newSenderBalance, client);
+    await updateBalance(recipientWallet.id, newRecipientBalance, client);
 
     //record transaction
     await recordTransaction({

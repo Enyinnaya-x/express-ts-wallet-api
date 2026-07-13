@@ -1,6 +1,7 @@
 import { pool } from '../config/database.js';
 import type { PoolClient } from 'pg';
 import type { Wallet } from '../models/wallet.model.js';
+import type { Transaction } from '../models/transaction.model.js';
 
 
 export async function createWallet(userId: number): Promise<Wallet> {
@@ -49,3 +50,4 @@ export async function updateBalance(walletId: number, newBalance: number, client
 
     return wallet;
 }
+

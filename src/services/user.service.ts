@@ -1,5 +1,6 @@
 import { createUser } from '../repositories/user.repository.js';
-import { createWallet } from '../repositories/wallet.repository.js';
+import { createWallet, findByUserId } from '../repositories/wallet.repository.js';
+import { findAllUserTransactions } from '../repositories/transaction.repository.js';
 import type { RegisterInput, LoginInput } from '../validators/user.validator.js';
 import { findByEmail } from '../repositories/user.repository.js';
 import { hashPassword, comparePassword } from '../utils/hash.js';
@@ -44,4 +45,12 @@ export async function loginUser(data: LoginInput){
       const { password, ...safeUser } = user;
 
       return {safeUser,  token: token };
+}
+
+export async function getUserTransactions(userId: number){
+    const wallet = await findByUserId(userId);
+
+    const transactions = await findAllUserTransactions(wallet.id);
+
+    return transactions;
 }

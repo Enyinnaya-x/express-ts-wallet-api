@@ -1,5 +1,5 @@
 import { type Request, type Response, type NextFunction } from 'express';
-import { registerUser, loginUser } from '../services/user.service.js';
+import { registerUser, loginUser, getUserTransactions } from '../services/user.service.js';
 
 
 export async function register(req: Request, res: Response, next: NextFunction)
@@ -18,5 +18,16 @@ export async function login(req: Request, res: Response, next: NextFunction) {
         res.status(200).json({ success: true, message: 'Login successful', data: { user } });
     } catch (error) {
         next(error);
+    }
+}
+
+export async function getTransactions(req: Request, res: Response, next: NextFunction){
+
+    try{
+        const result = await getUserTransactions(req.userId!);
+        res.status(200).json({success: true, data: { result }});
+        
+    }catch(err){
+        next(err);
     }
 }
