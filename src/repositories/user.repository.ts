@@ -27,3 +27,12 @@ export async function findByEmail(email: string){
     );
     return rows[0];
 }
+
+export async function findByAccountNum(accNum: string){
+    const { rows } = await query<User>(
+        `SELECT * FROM users WHERE acc_number = $1`,
+        [accNum]
+    );
+
+    return rows[0];
+}

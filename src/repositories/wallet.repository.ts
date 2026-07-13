@@ -1,4 +1,5 @@
 import { pool } from '../config/database.js';
+import type { PoolClient } from 'pg';
 import type { Wallet } from '../models/wallet.model.js';
 
 
@@ -19,18 +20,32 @@ export async function createWallet(userId: number): Promise<Wallet> {
     return wallet;
 }
 
-export async function findByUserId(userId: number): Promise<Wallet> {
-    const { rows } = await pool.query<Wallet>(
+export async function findByUserId(userId: number, client: PoolClient | typeof pool = pool): Promise<Wallet> {
+    const { rows } = await client.query<Wallet>(
         `SELECT * FROM wallets WHERE user_id = $1`,
         [userId]
     );
 
     const wallet = rows[0];
 
-     if (!wallet) {
+    if (!wallet) {
         throw new Error('Wallet does not exist');
     }
 
     return wallet;
+}
 
+export async function updateBalance(walletId: number, newBalance: number, client: PoolClient | typeof pool = pool): Promise<Wallet> {
+    const { rows } = await client.query<Wallet>(
+        `UPDATE wallets SET balance = $1 WHERE id = $2 RETURNING *`,
+        [newBalance, walletId]
+    );
+
+    const wallet = rows[0];
+
+    if (!wallet) {
+        throw new Error('Failed to update wallet balance');
+    }
+
+    return wallet;
 }

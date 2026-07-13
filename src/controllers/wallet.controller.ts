@@ -1,5 +1,5 @@
 import type { NextFunction, Request, Response } from "express";
-import { getUserWallet } from "../services/wallet.service.js";
+import { getUserWallet, sendMoney } from "../services/wallet.service.js";
 
 export async function getWallet(req: Request, res: Response, next: NextFunction){
 
@@ -10,4 +10,15 @@ export async function getWallet(req: Request, res: Response, next: NextFunction)
     }catch(err){
         next(err) 
     }
+}
+
+export async function initiateTransfer(req: Request, res: Response, next: NextFunction){
+        try{
+            const result = await sendMoney(req.body);
+            return res.status(200).json({success: true, message: 'Transaction has been initiated'} )
+
+
+        }catch(err){
+            next(err);
+        }
 }
