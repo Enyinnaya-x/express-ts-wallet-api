@@ -10,13 +10,13 @@ export const shorthands = undefined;
  */
 export const up = (pgm) => {
    pgm.sql(`
-    INSERT INTO assets (name, price) VALUES
-    ('Bitcoin', 63000),
-    ('Ethereum', 1800),
-    ('Solana', 77),
-    ('USDC', 1),
-    ('USDT', 1)
-  `);
+    INSERT INTO assets (name, price, sell_price) VALUES
+    ('Bitcoin', 6300000000000, 6000000000000),
+    ('Ethereum', 1800000000000000000000, 1500000000000000000000),
+    ('Solana', 77000000000, 70000000000),
+    ('USDC', 1000000, 1000000),
+    ('USDT', 1000000, 1000000)
+`);
 };
 
 /**

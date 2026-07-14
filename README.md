@@ -14,6 +14,10 @@ A wallet API built with Express.js and TypeScript.
 
 ## Note
 
-**Successful transactions always return a generic message (Transaction successful / Transaction initiated)**
+- **Successful transactions always return a generic message (Transaction successful / Transaction initiated)**
 
-**Transaction request must include an idempotency key from the client and old keys would return the generic message (Transaction successful / Transaction initiated)**
+- **Transaction requests of any kind must include an idempotency key from the client and old keys would return the generic message (Transaction successful / Transaction initiated) without making any changes to the database**
+
+*Money is saved as it's lowest unit i.e kobo, cents, e.t.c in the database.*
+
+*Sometimes errors are handled not so gracefully.*

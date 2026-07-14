@@ -1,5 +1,3 @@
-import { serialize } from 'node:v8';
-
 /**
  * @type {import('node-pg-migrate').ColumnDefinitions | undefined}
  */
@@ -11,34 +9,41 @@ export const shorthands = undefined;
  * @returns {Promise<void> | void}
  */
 export const up = (pgm) => {
-    pgm.createTable('assets', {
+    pgm.createTable('sales', {
         id: {
             type: 'serial',
             primaryKey: true
         },
-        name: {
-            type: 'varchar(255)',
-            unique: true,
+        user_id: {
+            type: 'bigint',
+            references: 'users',
+            notNull: true,
+            onDelete: 'CASCADE'
+        },
+        assets_id: {
+            type: 'bigint',
+            references: 'assets',
+            notNull: true,
+            onDelete: 'CASCADE'
+        },
+        sell_price_snapshot: {
+            type: 'bigint',
             notNull: true
         },
-        price: {
-            type: 'numeric',
+        payout: {
+            type: 'bigint',
             notNull: true
         },
-        sell_price:{
-            type: 'numeric',
-            notNull: true
-        },
-         created_at: {
+        created_at: {
             type: 'timestamp',
             notNull: true,
-            default: pgm.func('current_timestamp'),
+            default: pgm.func('current_timestamp')
         },
-        updated_at: {
+        update_at: {
             type: 'timestamp',
             notNull: true,
-            default: pgm.func('current_timestamp'),
-        },
+            default: pgm.func('current_timestamp')
+        }
     })
 };
 

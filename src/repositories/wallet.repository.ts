@@ -36,7 +36,7 @@ export async function findByUserId(userId: number, client: PoolClient | typeof p
     return wallet;
 }
 
-export async function updateBalance(walletId: number, newBalance: number, client: PoolClient | typeof pool = pool): Promise<Wallet> {
+export async function updateBalance(walletId: number, newBalance: bigint,  client: PoolClient | typeof pool = pool): Promise<Wallet> {
     const { rows } = await client.query<Wallet>(
         `UPDATE wallets SET balance = $1 WHERE id = $2 RETURNING *`,
         [newBalance, walletId]

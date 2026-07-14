@@ -1,4 +1,5 @@
 import type { Holding } from "../models/holding.model.js";
+import type { Sale } from "../models/sale.model.js";
 import { query } from "../utils/db.js";
 
 export async function getAllHoldings(){
@@ -15,7 +16,7 @@ export async function getUserHoldings(userId: number){
         [userId]
     );
 
-    return rows[0];
+    return rows;
 }
 
 export async function recordHoldingBalance(
@@ -49,4 +50,14 @@ export async function findHolding(
     );
 
     return rows[0];
+}
+
+export async function recordSale(
+    data: Pick<Sale, 'user_id' | 'asset_id' | 'sell_price_snapshot' | 'payout'>
+){
+    const { rows } = await query<Sale>(
+        `INSERT INTO sales(user_id, asset_id, sell_price_snapshot, payout)
+        VALUES($1, $2, $3, $4)`,
+        [data.user_id, data.asset_id, data.sell_price_snapshot, data.payout]
+    );
 }
