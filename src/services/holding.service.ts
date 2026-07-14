@@ -66,6 +66,5 @@ export async function sellUserAsset(data: SellAssetRequest){
 
     });
 
-
  });
 }
