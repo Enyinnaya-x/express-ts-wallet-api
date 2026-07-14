@@ -11,5 +11,13 @@ export const TransferSchema = z.object({
     recipientAccountNumber: z.string().min(10)
 })
 
+export const CryptoPurchaseSchema = z.object({
+    idempotency_key: z.string(),
+    user_id: z.number(),
+    amount: z.number(),
+    asset_id: z.number()
+})
+
 export type getWalletInput = z.infer<typeof getWalletSchema>;
 export type TransferRequest = z.infer<typeof TransferSchema>;
+export type CryptoPurchaseRequest = z.infer<typeof CryptoPurchaseSchema>;

@@ -1,4 +1,5 @@
 import type { Transaction } from "../models/transaction.model.js";
+import type { Purchase } from "../models/purchase.model.js";
 import { query } from "../utils/db.js";
 import { pool } from '../config/database.js';
 import type { PoolClient } from 'pg';

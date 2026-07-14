@@ -23,7 +23,7 @@ export async function createWallet(userId: number): Promise<Wallet> {
 
 export async function findByUserId(userId: number, client: PoolClient | typeof pool = pool): Promise<Wallet> {
     const { rows } = await client.query<Wallet>(
-        `SELECT * FROM wallets WHERE user_id = $1`,
+        `SELECT * FROM wallets WHERE user_id = $1 FOR UPDATE`,
         [userId]
     );
 
