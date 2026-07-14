@@ -42,9 +42,7 @@ export async function loginUser(data: LoginInput){
 
       const token = generateToken({ userId: user.id });
 
-      const { password, ...safeUser } = user;
-
-      return {safeUser,  token: token };
+      return {token: token };
 }
 
 export async function getUserTransactions(userId: number){
