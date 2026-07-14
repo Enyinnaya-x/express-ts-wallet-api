@@ -5,7 +5,7 @@ export async function fetchUserHoldings(req: Request, res: Response, next: NextF
         try{
             const result = await getHoldings(req.userId!);
 
-            return res.status(200).json({success: true, data: { result }});
+            return res.status(200).json({success: true,  result });
 
         }catch(err){
             next(err);
@@ -15,7 +15,7 @@ export async function fetchUserHoldings(req: Request, res: Response, next: NextF
 export async function sellAssetHoldings(req: Request, res: Response, next: NextFunction){
     try{
         const result = await sellUserAsset(req.body);
-        res.status(200).json({success: true, data: { result }});
+        res.status(200).json({success: true,  result });
 
 
     }catch(err){

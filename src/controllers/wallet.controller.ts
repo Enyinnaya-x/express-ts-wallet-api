@@ -5,7 +5,7 @@ export async function getWallet(req: Request, res: Response, next: NextFunction)
 
     try{
         const wallet = await getUserWallet(req.userId!);
-        return res.status(200).json({success: true, data: {wallet}});
+        return res.status(200).json({success: true, wallet});
 
     }catch(err){
         next(err) 

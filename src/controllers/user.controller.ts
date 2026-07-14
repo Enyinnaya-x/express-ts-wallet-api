@@ -15,7 +15,7 @@ export async function register(req: Request, res: Response, next: NextFunction)
 export async function login(req: Request, res: Response, next: NextFunction) {
     try {
         const user = await loginUser(req.body);
-        res.status(200).json({ success: true, message: 'Login successful', data: { user } });
+        res.status(200).json({ success: true, message: 'Login successful',  user });
     } catch (error) {
         next(error);
     }
@@ -25,7 +25,7 @@ export async function getTransactions(req: Request, res: Response, next: NextFun
 
     try{
         const result = await getUserTransactions(req.userId!);
-        res.status(200).json({success: true, data: { result }});
+        res.status(200).json({success: true, result });
         
     }catch(err){
         next(err);
