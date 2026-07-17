@@ -1,5 +1,6 @@
 import jwt, { type SignOptions } from 'jsonwebtoken';
 import { env } from '../config/env.js';
+import crypto from 'crypto';
 
 interface JwtPayload {
     userId: number;
@@ -16,5 +17,9 @@ export function generateToken(payload: JwtPayload): string {
 
 export function verifyToken(token: string): JwtPayload {
     return jwt.verify(token, env.JWT_SECRET) as JwtPayload;
+}
+
+export function generateRefreshToken(){
+  return crypto.randomBytes(40).toString('hex');
 }
 

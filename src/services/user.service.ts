@@ -5,7 +5,9 @@ import type { RegisterInput, LoginInput } from '../validators/user.validator.js'
 import { findByEmail } from '../repositories/user.repository.js';
 import { hashPassword, comparePassword } from '../utils/hash.js';
 import { generateAccountNumber } from '../utils/generateAccount.js';
-import { generateToken } from '../utils/jwt.js';
+import { generateToken, generateRefreshToken } from '../utils/jwt.js';
+import { storeRefreshToken } from '../repositories/refreshToken.repository.js';
+import { env } from '../config/env.js';
 
 export async function registerUser(data: RegisterInput) {
     //confirm is the user already exists
@@ -40,9 +42,19 @@ export async function loginUser(data: LoginInput){
         throw new Error('Invalid credentials');
     }
 
-      const token = generateToken({ userId: user.id });
+      const accessToken = generateToken({ userId: user.id });
+      const refreshToken = generateRefreshToken();
+      const REFRESH_TOKEN_EXPIRY_DAYS = Number(env.REFRESH_TOKEN_EXPIRY_DAYS);
+      const expiresAt = new Date(Date.now() + REFRESH_TOKEN_EXPIRY_DAYS * 24 * 60 * 60 * 1000); // X days from now
 
-      return {token: token };
+      //store refresh token in the db
+      await storeRefreshToken({
+        'user_id': user.id,
+        'token': refreshToken,
+        'expires_at': expiresAt
+      });
+
+      return {access_token: accessToken, refresh_token: refreshToken };
 }
 
 export async function getUserTransactions(userId: number){
